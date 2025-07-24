@@ -28,7 +28,7 @@ final class SearchFacetsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($options['facets'] as $facetId => $facetData) {
-            $facet = $this->facetRegistry->getFacetById($facetId);
+            $facet = $this->facetRegistry->getFacetById((string) $facetId);
             $choices = [];
             foreach ($facetData['buckets'] as $bucket) {
                 $choices[$facet->getBucketLabel($bucket)] = $bucket['key'];
@@ -36,7 +36,7 @@ final class SearchFacetsType extends AbstractType
             if ([] !== $choices) {
                 $builder
                     ->add(
-                        $facetId,
+                        (string) $facetId,
                         ChoiceType::class,
                         [
                             'label' => $facet->getLabel(),
