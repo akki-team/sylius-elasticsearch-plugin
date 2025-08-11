@@ -19,17 +19,48 @@
       "name": "Mug",
       "description": "@string@",
       "slug": "mug",
-      "defaultVariant": null
+      "defaultVariant": null,
+      "defaultVariantData": null
+    },
+    {
+      "productTaxons": [],
+      "mainTaxon": null,
+      "averageRating": 0,
+      "images": [],
+      "id": "@integer@",
+      "code": "MUG2",
+      "variants": [],
+      "options": [],
+      "associations": [],
+      "createdAt": "@string@",
+      "updatedAt": "@string@",
+      "shortDescription": null,
+      "reviews": [],
+      "name": "Mug 2",
+      "description": "@string@",
+      "slug": "mug-2",
+      "defaultVariant": null,
+      "defaultVariantData": null
     }
   ],
   "facets": {
+    "material": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "ceramic",
+          "doc_count": 2
+        }
+      ]
+    },
     "color": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "red",
-          "doc_count": 1
+          "doc_count": 2
         }
       ]
     },
@@ -49,7 +80,7 @@
     "has_previous_page": false,
     "has_next_page": false,
     "per_page": 9,
-    "total_items": 1,
+    "total_items": 2,
     "total_pages": 1
   }
 }

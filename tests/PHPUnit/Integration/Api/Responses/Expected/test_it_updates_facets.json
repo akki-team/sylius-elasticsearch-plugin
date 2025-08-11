@@ -19,8 +19,7 @@
       "name": "Mug",
       "description": "@string@",
       "slug": "mug",
-      "defaultVariant": null,
-      "defaultVariantData": null
+      "defaultVariant": null
     }
   ],
   "facets": {
