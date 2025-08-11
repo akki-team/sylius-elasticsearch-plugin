@@ -19,7 +19,8 @@
       "name": "Mug",
       "description": "@string@",
       "slug": "mug",
-      "defaultVariant": null
+      "defaultVariant": null,
+      "defaultVariantData": null
     },
     {
       "productTaxons": [],
@@ -38,7 +39,8 @@
       "name": "Mug 2",
       "description": "@string@",
       "slug": "mug-2",
-      "defaultVariant": null
+      "defaultVariant": null,
+      "defaultVariantData": null
     }
   ],
   "facets": {

@@ -5,4 +5,5 @@ framework:
     session:
         handler_id: ~
     ide: phpstorm
-
+    annotations:
+        enabled: false
