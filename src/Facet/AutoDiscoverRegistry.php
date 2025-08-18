@@ -47,7 +47,7 @@ final class AutoDiscoverRegistry implements AutoDiscoverRegistryInterface
         $this->discoverOptions();
 
         foreach ($this->facets as $facetId => $facet) {
-            $this->registry->addFacet($facetId, $facet);
+            $this->registry->addFacet((string) $facetId, $facet);
         }
     }
 

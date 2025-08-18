@@ -40,7 +40,7 @@ final class ShopProductsFinder implements ShopProductsFinderInterface
                     continue;
                 }
 
-                $facet = $this->facetRegistry->getFacetById($facetId);
+                $facet = $this->facetRegistry->getFacetById((string) $facetId);
                 $boolQuery->addFilter($facet->getQuery($selectedBuckets));
             }
         }

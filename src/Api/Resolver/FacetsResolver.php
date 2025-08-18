@@ -39,7 +39,7 @@ final class FacetsResolver implements FacetsResolverInterface
         $query->setSize(0);
 
         foreach ($this->facetRegistry->getFacets() as $facetId => $facet) {
-            $query->addAggregation($facet->getAggregation()->setName($facetId));
+            $query->addAggregation($facet->getAggregation()->setName((string) $facetId));
         }
 
         foreach ($data['facets'] ?? [] as $facetId => $selectedBuckets) {
@@ -47,7 +47,7 @@ final class FacetsResolver implements FacetsResolverInterface
                 continue;
             }
 
-            $facet = $this->facetRegistry->getFacetById($facetId);
+            $facet = $this->facetRegistry->getFacetById((string) $facetId);
             $boolQuery->addFilter($facet->getQuery($selectedBuckets));
         }
 

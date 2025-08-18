@@ -30,7 +30,7 @@ final class ProductsFilterFacetResolver implements ProductsFilterFacetResolverIn
         $query = $this->queryBuilder->getQuery($event, $namePropertyPrefix);
 
         foreach ($this->facetRegistry->getFacets() as $facetId => $facet) {
-            $query->addAggregation($facet->getAggregation()->setName($facetId));
+            $query->addAggregation($facet->getAggregation()->setName((string) $facetId));
         }
 
         $query->setSize(0);

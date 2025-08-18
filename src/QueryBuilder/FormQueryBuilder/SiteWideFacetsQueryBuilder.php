@@ -39,7 +39,7 @@ final class SiteWideFacetsQueryBuilder implements SiteWideFacetsQueryBuilderInte
                 continue;
             }
 
-            $facet = $this->facetRegistry->getFacetById($facetId);
+            $facet = $this->facetRegistry->getFacetById((string) $facetId);
             $boolQuery->addFilter($facet->getQuery($selectedBuckets));
         }
 
