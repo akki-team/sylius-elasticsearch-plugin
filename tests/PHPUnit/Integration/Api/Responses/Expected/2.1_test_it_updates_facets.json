@@ -19,10 +19,21 @@
       "name": "Mug",
       "description": "@string@",
       "slug": "mug",
-      "defaultVariant": null
+      "defaultVariant": null,
+      "defaultVariantData": null
     }
   ],
   "facets": {
+    "material": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "ceramic",
+          "doc_count": 1
+        }
+      ]
+    },
     "color": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,

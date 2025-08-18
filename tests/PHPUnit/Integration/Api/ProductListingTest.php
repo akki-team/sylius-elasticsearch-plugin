@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace PHPUnit\Integration\Api;
 
 use ApiTestCase\JsonApiTestCase;
+use Sylius\Bundle\CoreBundle\SyliusCoreBundle;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Process\Process;
 
@@ -40,6 +41,13 @@ final class ProductListingTest extends JsonApiTestCase
         );
 
         $response = $this->client->getResponse();
+
+        if (SyliusCoreBundle::VERSION_ID >= 20100) {
+            $this->assertResponse($response, '2.1_test_it_finds_products_by_name', Response::HTTP_OK);
+
+            return;
+        }
+
         $this->assertResponse($response, 'test_it_finds_products_by_name', Response::HTTP_OK);
     }
 
@@ -54,6 +62,13 @@ final class ProductListingTest extends JsonApiTestCase
         );
 
         $response = $this->client->getResponse();
+
+        if (SyliusCoreBundle::VERSION_ID >= 20100) {
+            $this->assertResponse($response, '2.1_test_it_finds_products_by_name_and_facets', Response::HTTP_OK);
+
+            return;
+        }
+
         $this->assertResponse($response, 'test_it_finds_products_by_name_and_facets', Response::HTTP_OK);
     }
 
@@ -68,6 +83,13 @@ final class ProductListingTest extends JsonApiTestCase
         );
 
         $response = $this->client->getResponse();
+
+        if (SyliusCoreBundle::VERSION_ID >= 20100) {
+            $this->assertResponse($response, '2.1_test_it_finds_products_by_name_and_multiple_facets', Response::HTTP_OK);
+
+            return;
+        }
+
         $this->assertResponse($response, 'test_it_finds_products_by_name_and_multiple_facets', Response::HTTP_OK);
     }
 
@@ -82,6 +104,13 @@ final class ProductListingTest extends JsonApiTestCase
         );
 
         $response = $this->client->getResponse();
+
+        if (SyliusCoreBundle::VERSION_ID >= 20100) {
+            $this->assertResponse($response, '2.1_test_it_updates_facets', Response::HTTP_OK);
+
+            return;
+        }
+
         $this->assertResponse($response, 'test_it_updates_facets', Response::HTTP_OK);
     }
 
