@@ -4,6 +4,6 @@
 
 <div class="dropdown-menu dropdown-menu-end ">
     {% for limit in bitbag_es_pagination_available_page_limits %}
-        <a class="dropdown-item" href="{{ path(route, {'slug': slug, 'limit': limit}|merge(route_parameters)) }}">{{ limit }}</a>
+        <a class="dropdown-item" href="{{ path(route, route_parameters|merge({'slug': slug, 'limit': limit})) }}">{{ limit }}</a>
     {% endfor %}
 </div>
