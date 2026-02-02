@@ -10,10 +10,12 @@ Feature: Site-wide products search
     And the store classifies its products as "Motorbikes"
     And the store has a select product attribute "Car Type" with values "Cabrio" and "SUV"
     And the store has a select product attribute "Motorbike Type" with values "Enduro" and "Naked"
+    And the store has a non-translatable select product attribute "Wheel size" with value "18"
     And there is a product named "BMW Z4" in the store
     And this product's price is "$42,670.00"
     And this product has select attribute "Car Type" with value "Cabrio"
     And this product has a text attribute "Color" with value "Red"
+    And this product has a select attribute "Wheel size" with value "18"
     And this product has option "Supply" with values "Gasoline" and "Diesel"
     And this product is available in "Gasoline" supply priced at "$42,670.00"
     And this product is available in "Diesel" supply priced at "$45,670.00"
@@ -147,5 +149,15 @@ Feature: Site-wide products search
       """
       Diesel (1)
       Gasoline (1)
+      """
+    And I should see 6 products in search results
+
+  @ui
+  Scenario: Searching products and viewing wheel size select attributes aggregations
+    When I browse the search page
+    And I search the products by "BMW or Volvo" phrase in the site-wide search box
+    Then I should see the following options in the "Wheel size" attribute filter:
+      """
+      18 (1)
       """
     And I should see 6 products in search results
