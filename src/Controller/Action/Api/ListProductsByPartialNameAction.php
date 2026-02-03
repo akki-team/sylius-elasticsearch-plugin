@@ -40,7 +40,7 @@ final class ListProductsByPartialNameAction
         }
 
         /** @var array $products */
-        $products = $this->namedProductsFinder->findByNamePart((string) $request->query->get('query'));
+        $products = $this->namedProductsFinder->findByNamePart($request->query->get('query'));
 
         /** @var ProductInterface $product */
         foreach ($products as $product) {

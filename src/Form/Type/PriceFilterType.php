@@ -40,10 +40,10 @@ final class PriceFilterType extends AbstractFilterType
                 'required' => false,
                 'currency' => $this->currencyContext->getCurrencyCode(),
                 'constraints' => [
-                    new Type([
-                        'type' => 'numeric',
-                        'message' => 'bitbag_sylius_elasticsearch_plugin.min_price_numeric',
-                    ]),
+                    new Type(
+                        type: 'numeric',
+                        message: 'bitbag_sylius_elasticsearch_plugin.min_price_numeric',
+                    ),
                     new PositiveOrZero([
                         'message' => 'bitbag_sylius_elasticsearch_plugin.min_price_positive_or_zero',
                     ]),
@@ -57,10 +57,10 @@ final class PriceFilterType extends AbstractFilterType
                 'required' => false,
                 'currency' => $this->currencyContext->getCurrencyCode(),
                 'constraints' => [
-                    new Type([
-                        'type' => 'numeric',
-                        'message' => 'bitbag_sylius_elasticsearch_plugin.max_price_numeric',
-                    ]),
+                    new Type(
+                        type: 'numeric',
+                        message: 'bitbag_sylius_elasticsearch_plugin.max_price_numeric',
+                    ),
                     new PositiveOrZero([
                         'message' => 'bitbag_sylius_elasticsearch_plugin.max_price_positive_or_zero',
                     ]),
