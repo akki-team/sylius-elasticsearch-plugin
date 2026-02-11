@@ -7,7 +7,7 @@ Feature: Site-wide products search
   Background:
     Given the store operates on a single channel in "United States"
     And the store classifies its products as "Cars"
-    And the store classifies its products as "Motorbikes"
+    And the store classifies its products as "Motorbikes" with "Motor-bikes" code
     And the store has a select product attribute "Car Type" with values "Cabrio" and "SUV"
     And the store has a select product attribute "Motorbike Type" with values "Enduro" and "Naked"
     And the store has a non-translatable select product attribute "Wheel size" with value "18"
@@ -161,3 +161,8 @@ Feature: Site-wide products search
       18 (1)
       """
     And I should see 6 products in search results
+
+  @ui
+  Scenario: Showing products in taxon
+    When I browse products from taxon "Motorbikes"
+    Then I should see the product "BMW GS"
