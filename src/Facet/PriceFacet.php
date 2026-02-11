@@ -20,6 +20,9 @@ use Elastica\Query\BoolQuery;
 use Elastica\Query\Range;
 use Sylius\Bundle\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Sylius\Component\Core\Context\ShopperContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Currency\Converter\CurrencyConverterInterface;
+use Webmozart\Assert\Assert;
 
 final class PriceFacet implements FacetInterface
 {
@@ -29,6 +32,7 @@ final class PriceFacet implements FacetInterface
         private ConcatedNameResolverInterface $channelPricingNameResolver,
         private MoneyFormatterInterface $moneyFormatter,
         private ShopperContextInterface $shopperContext,
+        private CurrencyConverterInterface $currencyConverter,
         private int $interval
     ) {
     }
@@ -61,13 +65,23 @@ final class PriceFacet implements FacetInterface
 
     public function getBucketLabel(array $bucket): string
     {
+        /** @var ChannelInterface $channel */
+        $channel = $this->shopperContext->getChannel();
+        $baseCurrency = $channel->getBaseCurrency();
+
+        Assert::notNull($baseCurrency);
+
+        /** @var string $baseCurrencyCode */
+        $baseCurrencyCode = $baseCurrency->getCode();
+        $currentCurrencyCode = $this->shopperContext->getCurrencyCode();
+
         $from = $this->moneyFormatter->format(
-            (int) $bucket['key'],
+            $this->currencyConverter->convert((int) $bucket['key'], $baseCurrencyCode, $currentCurrencyCode),
             $this->shopperContext->getCurrencyCode(),
             $this->shopperContext->getLocaleCode()
         );
         $to = $this->moneyFormatter->format(
-            (int) ($bucket['key'] + $this->interval),
+            $this->currencyConverter->convert((int) ($bucket['key'] + $this->interval), $baseCurrencyCode, $currentCurrencyCode),
             $this->shopperContext->getCurrencyCode(),
             $this->shopperContext->getLocaleCode()
         );
