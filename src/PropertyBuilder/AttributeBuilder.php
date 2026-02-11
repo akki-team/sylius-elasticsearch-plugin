@@ -112,7 +112,7 @@ final class AttributeBuilder extends AbstractBuilder
         Document $document
     ): void {
         $documentKey = $this->attributeNameResolver
-            ->resolvePropertyName($attribute->getCode());
+            ->resolvePropertyName((string) $attribute->getCode());
 
         $valuesPerLocale = $this->resolveProductAttributeValuesPerLocale(
             $attribute,
