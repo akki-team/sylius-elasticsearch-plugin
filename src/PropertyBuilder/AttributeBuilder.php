@@ -59,52 +59,51 @@ final class AttributeBuilder extends AbstractBuilder
         }
     }
 
-    private function resolveProductAttribute(
-        array $attributeConfiguration,
-        mixed $attributeValue,
+    private function resolveProductAttributeValuesPerLocale(
+        AttributeInterface $attribute,
         ProductAttributeValue $productAttribute
     ): array {
-        /** @var AttributeInterface $attribute */
-        $attribute = $productAttribute->getAttribute();
+        $value = $productAttribute->getValue();
+        if (null === $value) {
+            return [];
+        }
+
+        $values = is_array($value) ? $value : [$value];
+        $result = [];
 
         if (SelectAttributeType::TYPE === $attribute->getType()) {
-            $choices = $attributeConfiguration['choices'];
-            if (is_array($attributeValue)) {
-                foreach ($attributeValue as $i => $item) {
-                    $attributeValue[$i] = $choices[$item][$productAttribute->getLocaleCode()] ?? $item;
+            $choices = $attribute->getConfiguration()['choices'] ?? [];
+
+            if ($attribute->isTranslatable()) {
+                $locale = $productAttribute->getLocaleCode();
+                if (null === $locale) {
+                    return [];
                 }
-            } else {
-                $attributeValue = $choices[$attributeValue][$productAttribute->getLocaleCode()] ?? $attributeValue;
+
+                foreach ($values as $item) {
+                    $result[$locale][] = $choices[$item][$locale] ?? $item;
+                }
+
+                return $result;
             }
+
+            foreach ($values as $item) {
+                foreach (($choices[$item] ?? []) as $locale => $label) {
+                    $result[$locale][] = $label;
+                }
+            }
+
+            return $result;
         }
 
-        $attributes = [];
-        if (is_array($attributeValue)) {
-            foreach ($attributeValue as $singleElement) {
-                $attributes[] = $this->stringFormatter->formatToLowercaseWithoutSpaces((string) $singleElement);
-            }
-        } else {
-            switch (true) {
-                case is_string($attributeValue):
-                    $attributes[] = $this->stringFormatter->formatToLowercaseWithoutSpaces($attributeValue);
-
-                    break;
-                case $attributeValue instanceof \DateTime:
-                    $attributeFormat = $attribute->getConfiguration()['format'] ?? null;
-                    $defaultFormat = DateAttributeType::TYPE === $attribute->getStorageType() ?
-                        self::DEFAULT_DATE_FORMAT :
-                        self::DEFAULT_DATE_TIME_FORMAT
-                    ;
-
-                    $attributes[] = $attributeValue->format($attributeFormat ?? $defaultFormat);
-
-                    break;
-                default:
-                    $attributes[] = $attributeValue;
-            }
+        $locale = $productAttribute->getLocaleCode();
+        if (null === $locale) {
+            return [];
         }
 
-        return $attributes;
+        $result[$locale] = $values;
+
+        return $result;
     }
 
     private function processAttribute(
@@ -112,25 +111,49 @@ final class AttributeBuilder extends AbstractBuilder
         ProductAttributeValue $productAttribute,
         Document $document
     ): void {
-        /** @var string $attributeCode */
-        $attributeCode = $attribute->getCode();
-        $attributeConfiguration = $attribute->getConfiguration();
+        $documentKey = $this->attributeNameResolver
+            ->resolvePropertyName((string) $attribute->getCode());
 
-        $value = $productAttribute->getValue();
-        $documentKey = $this->attributeNameResolver->resolvePropertyName($attributeCode);
-        $code = sprintf('%s_%s', $documentKey, $productAttribute->getLocaleCode());
-
-        $values = $this->resolveProductAttribute(
-            $attributeConfiguration,
-            $value,
+        $valuesPerLocale = $this->resolveProductAttributeValuesPerLocale(
+            $attribute,
             $productAttribute
         );
 
-        $values = in_array($attribute->getStorageType(), [DateAttributeType::TYPE, DatetimeAttributeType::TYPE], true) ?
-            ($values[0] ?? $values) :
-            $values
-        ;
+        foreach ($valuesPerLocale as $locale => $rawValues) {
+            $normalized = $this->normalizeValues($attribute, $rawValues);
 
-        $document->set($code, $values);
+            $document->set(
+                sprintf('%s_%s', $documentKey, $locale),
+                $normalized
+            );
+        }
+    }
+
+    private function normalizeValues(AttributeInterface $attribute, array $values): array|string
+    {
+        $normalized = array_map(function ($value) use ($attribute) {
+            if (is_string($value)) {
+                return $this->stringFormatter->formatToLowercaseWithoutSpaces($value);
+            }
+
+            if ($value instanceof \DateTimeInterface) {
+                $format = $attribute->getConfiguration()['format'] ?? null;
+                $default = DateAttributeType::TYPE === $attribute->getStorageType()
+                    ? self::DEFAULT_DATE_FORMAT
+                    : self::DEFAULT_DATE_TIME_FORMAT;
+
+                return $value->format($format ?? $default);
+            }
+
+            return $value;
+        }, $values);
+
+        return in_array(
+            $attribute->getStorageType(),
+            [DateAttributeType::TYPE, DatetimeAttributeType::TYPE],
+            true
+        )
+            ? ($normalized[0] ?? $normalized)
+            : $normalized;
     }
 }
