@@ -14,12 +14,15 @@ use FOS\ElasticaBundle\Event\PostIndexPopulateEvent;
 use FOS\ElasticaBundle\Event\PreIndexPopulateEvent;
 use FOS\ElasticaBundle\Index\IndexManager;
 use FOS\ElasticaBundle\Index\ResetterInterface;
+use FOS\ElasticaBundle\Persister\PagerPersisterInterface;
 use FOS\ElasticaBundle\Persister\PagerPersisterRegistry;
 use FOS\ElasticaBundle\Provider\PagerProviderRegistry;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class Populate
 {
+    private PagerPersisterInterface $pagerPersister;
+
     public function __construct(
         private EventDispatcherInterface $dispatcher,
         private IndexManager $indexManager,
