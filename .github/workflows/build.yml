@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ "8.2", "8.3" ]
+        php: [ "8.2", "8.3", "8.4" ]
         symfony: [ "^6.4", "^7.1" ]
         sylius: ["~2.0.0", "~2.1.0"]
         node: [ "20.x" ]
@@ -64,7 +64,8 @@ jobs:
       - name: Runs Elasticsearch
         uses: elastic/elastic-github-actions/elasticsearch@master
         with:
-          stack-version: 7.16.3
+          stack-version: 9.0.0
+          security-enabled: false
 
       - name: Output PHP version for Symfony CLI
         run: php -v | head -n 1 | awk '{ print $2 }' > .php-version
