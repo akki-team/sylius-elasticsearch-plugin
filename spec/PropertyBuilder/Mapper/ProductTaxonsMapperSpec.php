@@ -47,7 +47,7 @@ final class ProductTaxonsMapperSpec extends ObjectBehavior
         $taxon->getCode()->willReturn('book');
         $taxon->getAncestors()->willReturn(new ArrayCollection([]));
 
-        $taxons = new \ArrayIterator([$taxon]);
+        $taxons = new \ArrayIterator([$taxon->getWrappedObject()]);
 
         $collection->getIterator()->willReturn($taxons);
 
