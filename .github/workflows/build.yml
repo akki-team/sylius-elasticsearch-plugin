@@ -17,6 +17,12 @@ jobs:
 
     name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}, Node ${{ matrix.node }}"
 
+    # Jobs non bloquants (suivis dans un ticket dédié), pour blocages upstream :
+    #  - PHP 8.4 : phpspec/phpunit dev ne supportent pas encore 8.4 (le runtime, lui, déclare ^8.4).
+    #  - Sylius 2.1 : crash symfony/type-info au warmup (« union object+class »), bug hors plugin.
+    # Set requis = Sylius 2.0 × PHP 8.2/8.3 (cible ES9 vérifiée).
+    continue-on-error: ${{ matrix.php == '8.4' || matrix.sylius == '~2.1.0' }}
+
     strategy:
       fail-fast: false
       matrix:
