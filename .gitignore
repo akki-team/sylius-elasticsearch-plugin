@@ -22,6 +22,8 @@ tests/Application/node_modules/
 tests/Application/var/
 !tests/Application/var/.gitkeep
 
+tests/Application/config/reference.php
+
 tests/Application/web/*
 !tests/Application/web/favicon.ico
 !tests/Application/web/app.php
