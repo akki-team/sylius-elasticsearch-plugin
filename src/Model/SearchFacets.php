@@ -27,7 +27,7 @@ final class SearchFacets implements Iterator
         return $this->selectedBuckets[$facetId];
     }
 
-    public function __set(string $facetId, string $selectedBuckets): void
+    public function __set(string $facetId, array $selectedBuckets): void
     {
         $this->selectedBuckets[$facetId] = $selectedBuckets;
     }
